@@ -1,0 +1,32 @@
+local_costmap:
+   global_frame: odom
+   robot_base_frame: robot_footprint
+
+   update_frequency:  3.0 # 3.0 # 2.0 # default value = 5.0
+   # On that particular point, older versions of amcl had a very
+   # inefficient procedure for pre-computing the likelihood field model for the laser. 
+   # It could take tens of seconds to run on large maps.
+   # Ref.: http://ros-users.122217.n3.nabble.com/Navigation-stack-not-working-td1519053.html
+   # definir update_frequency mais baixo afetará a frequência com que os obstáculos 
+   # são colocados no mapa de custos. Com uma configuração de 1,0 Hz, isso significa que 
+   # você só receberá novas informações de obstáculo uma vez por segundo, o que pode ser 
+   # problemático dependendo de quais obstáculos dinâmicos existem em seu ambiente. 
+
+   publish_frequency: 3.0 # default value = 2.0 # 5.0=original Udacity # this value can be lowered to zero.
+
+   width:      3.0  # 6.0 # 8.0 # 10.0=original Udacity
+   height:     3.0  # 6.0 # 8.0 # 10.0=original Udacity
+   resolution: 0.025 # 0.05=original Udacity # Therefore, scanning a map with resolution <= 0.01 will 
+   # require the robot to rotate several times in order to clear unknown dots.
+   # We found 0.02 to be a sufficient resolution to use. - http://kaiyuzheng.me/documents/navguide.pdf
+   static_map: false
+   rolling_window: true
+# Observed values from: http://wiki.ros.org/navigation/Tutorials/RobotSetup#Robot_Setup
+
+# bellow: Ref.: http://kaiyuzheng.me/documents/navguide.pdf
+   path_distance_bias: 32.0
+   goal_distance_bias: 20.0
+   occdist_scale: 0.02
+   latch_xy_goal_tolerance: false # default: false # If goal tolerance is latched, 
+   # if the robot ever reaches the goal xy location it will simply rotate in place, 
+   # ven if it ends up outside the goal tolerance while it is doing so.

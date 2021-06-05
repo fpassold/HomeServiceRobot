@@ -1,0 +1,33 @@
+<launch>
+  <!-- Map Server Node -->
+  <!-- Indicate name and path to be map file: -->
+  <!-- <arg name="map_file" default="$(find <YOUR PACKAGE NAME>)/maps/<YOUR MAP NAME>.yaml"/> -->
+  <arg name="map_file" default="$(find my_robot)/maps/map.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <!-- <param name="frame_id" value="/map"/> or -->
+    <!-- <param name="frame_id" value="map"/> -->
+    <!-- to match `global_frame: map` in `config/global_costmap_params.yaml`; otherwise an error happens
+         [ WARN] [1614060118.263665148, 1720.845000000]: Frame_id of map received:'/map' doesn't 
+         match global_frame_id:'map'. This could cause issues with reading published topics -->
+  </node>
+  
+  <!-- AMCL Node -->
+  <node name="amcl" pkg="amcl" type="amcl" output="screen">
+    <!-- <remap from="scan" to="<YOUR PACKAGE NAME>/laser/scan"/> -->
+    <!-- what are the sensor readings from the LiDAR? -->
+    <!-- <remap from="scan" to="my_robot/laser/scan"/> --> 
+    <remap from="scan" to="/scan"/>
+    <!--  parameters in order to connect the world (`map` frame) with the robot (`odom` frame). -->
+    <param name="odom_frame_id"   value="odom"/>
+    <param name="odom_model_type" value="diff-corrected"/>
+    <param name="base_frame_id"   value="robot_footprint"/>
+    <param name="global_frame_id" value="map"/>
+    <!-- Optional: Set Initial Position
+      <param name="initial_pose_x" value="0"/>
+      <param name="initial_pose_y" value="0"/>
+    -->
+    <!-- Config parameters created in another folder to "clean" launch file -->
+    <!-- Fernando, on 19/02/2021-->
+    <rosparam file="$(find my_robot)/config/amcl_params.yaml" command="load" />
+  </node>
+</launch>

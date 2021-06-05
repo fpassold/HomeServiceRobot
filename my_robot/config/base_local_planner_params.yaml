@@ -1,0 +1,29 @@
+# Ref.: http://kaiyuzheng.me/documents/navguide.pdf
+controller_frequency: 10 # original Udacity value
+
+TrajectoryPlannerROS:
+  max_vel_x: 1.5  # 1.5 0.5 1.0
+  min_vel_x: -0.1 # 0.01 # 0.05 # 0.1 0.01 # original Udacity value = -0.1 (negative !?)
+  max_vel_theta: 0.785398 # 0.785398 # 1.57
+
+  min_in_place_vel_theta: 0.261799 # 15 degress # 18 degrees=0.314
+
+  acc_lim_theta: 1.57 # 1.5708 # 3.14
+  acc_lim_x: 1.57 # 2.0
+  acc_lim_y: 1.57 # 2.0
+
+  #sim_time: 1.0 # original Udacity value, but...
+  # http://kaiyuzheng.me/documents/navguide.pdf recommendations bellow:
+  #sim_time: 2.0 # low value, limited performance, difficulties to pass narrow spaces
+  sim_time: 4.0 # 2.0 # 4.0 # 1.0 # time interval for DWA planner. 4.0 = typical value
+  #sim_time: 5.0 # long curver, not very flexible, heavier computational load
+  
+  #vx_samples: 5.0 # original Udacity value
+  vx_samples: 8.0 # 5.0 # may require more coputational power, Typical = 20
+  vtheta_samples: 10.0
+
+  pdist_scale: 0.6 # default=0.6 # The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0
+  gdist_scale: 0.8 # default=0.8 # The weighting for how much the controller should attempt to reach its local goal, also controls speed, maximal possible value is 5.0
+  occdist_scale: 0.02 # The weighting for how much the controller should attempt to avoid obstacles (default = 0.01)
+
+  holonomic_robot: false

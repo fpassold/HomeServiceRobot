@@ -1,0 +1,26 @@
+global_costmap:
+   global_frame: map # /map
+   robot_base_frame: robot_footprint # base_link
+
+   update_frequency:  2.0 # 3.0 # 5.0 # 2.0=original Udacity // overload processing, warnings, 
+   # higher values cause the map to be updated more frequently. default = 5.0
+   # On that particular point, older versions of amcl had a very
+   # inefficient procedure for pre-computing the likelihood field model for the laser. 
+   # It could take tens of seconds to run on large maps.
+   # Ref.: http://ros-users.122217.n3.nabble.com/Navigation-stack-not-working-td1519053.html
+   # definir update_frequency mais baixo afetará a frequência com que os obstáculos 
+   # são colocados no mapa de custos. Com uma configuração de 1,0 Hz, isso significa que 
+   # você só receberá novas informações de obstáculo uma vez por segundo, o que pode ser 
+   # problemático dependendo de quais obstáculos dinâmicos existem em seu ambiente. 
+
+   publish_frequency: 2.0 # 2.0=original Udacity # this value can be lowered to zero.
+
+   width:      12.0 # 16.0 # 20.0=original Udacity
+   height:     12.0 # 16.0 # 20.0=original Udacity
+   resolution:  0.05 # 0.05 // reduce computation power; 0.05=original Udacity
+   # scanning a map with resolution <= 0.01 will 
+   # require the robot to rotate several times in order to clear unknown dots.
+   # We found 0.02 to be a sufficient resolution to use. - http://kaiyuzheng.me/documents/navguide.pdf
+   static_map: true
+   rolling_window: false
+# Observed values from: http://wiki.ros.org/navigation/Tutorials/RobotSetup#Robot_Setup

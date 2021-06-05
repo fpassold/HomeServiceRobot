@@ -1,0 +1,273 @@
+<?xml version='1.0'?>
+
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Gazebo Plugins -->
+  <xacro:include filename="$(find my_robot)/urdf/my_robot.gazebo" />
+
+  <!-- Follow original part of my_robot.xacro -->
+
+  <link name="robot_footprint"></link>
+
+  <joint name="robot_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="robot_footprint"/>
+    <child link="chassis" />
+  </joint>
+
+  <link name='chassis'>
+    <pose>0 0 0.1 0 0 0</pose>
+
+    <inertial>
+      <mass value="15.0"/>
+      <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+      <inertia
+          ixx="0.1" ixy="0" ixz="0"
+          iyy="0.1" iyz="0"
+          izz="0.1"
+      />
+    </inertial>
+
+    <collision name='collision'>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/> 
+      <geometry>
+        <box size=".4 .2 .1"/>
+      </geometry>
+    </collision>
+
+    <visual name='chassis_visual'>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <box size=".4 .2 .1"/>
+      </geometry>
+    </visual>
+
+
+    <collision name='back_caster_collision'>
+      <origin xyz="-0.15 0 -0.05" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="0.0499"/>
+      </geometry>
+    </collision>
+
+    <visual name='back_caster_visual'>
+      <origin xyz="-0.15 0 -0.05" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </visual>
+
+    <collision name='front_caster_collision'>
+      <origin xyz="0.15 0 -0.05" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="0.0499"/>
+      </geometry>
+    </collision>
+
+    <visual name='front_caster_visual'>
+      <origin xyz="0.15 0 -0.05" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Robot Enhancements -->
+  <!-- Constants for robots dimensions -->
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="width" value="0.2" />
+  <xacro:property name="height" value="0.1" />
+  <xacro:property name="length" value="0.4" />
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_thickness" value="0.05" />
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="materials.xacro" />
+
+  <!-- Defining the left wheel        -->
+  <link name='left_wheel'>
+    <inertial>
+      <mass value="5.0"/>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <inertia
+        ixx="0.1" ixy="0" ixz="0"
+        iyy="0.1" iyz="0"
+        izz="0.1"
+      />
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry> 
+        <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/> 
+      </geometry> 
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>   	
+      <geometry> 
+        <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/> 
+      </geometry>
+      <material name="blue"/>      
+    </visual>  	
+  </link>  
+
+  <!-- Defining the right wheel        -->
+  <link name='right_wheel'>
+    <inertial>
+      <mass value="5.0"/>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <inertia
+        ixx="0.1" ixy="0" ixz="0"
+        iyy="0.1" iyz="0"
+        izz="0.1"
+      />
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>
+      <geometry> 
+        <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/> 
+      </geometry> 
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}"/>   	
+      <geometry> 
+        <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/> 
+      </geometry>
+      <material name="blue"/>       
+    </visual>  	
+  </link>
+
+  <!-- Defining the joints for the wheels -->
+  <!-- Bellow simply copyed from 6. Create Joints for the two wheels -->
+  <joint type="continuous" name="left_wheel_hinge">
+    <origin xyz="0 0.15 0" rpy="0 0 0"/>
+    <child link="left_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <!-- Bellow simply copyed from 6. Create Joints for the two wheels -->
+  <joint type="continuous" name="right_wheel_hinge">
+    <origin xyz="0 -0.15 0" rpy="0 0 0"/>
+    <child link="right_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>	
+
+  <!-- Trying to introduce collors for some elements -->
+  <!-- Ref: https://answers.ros.org/question/238020/what-is-wrong-with-my-xacro-file-that-i-cant-see-the-color-of-the-box-in-gazebo/ -->
+
+  <gazebo reference="chassis">
+    <material>Gazebo/SkyBlue</material>
+  </gazebo>
+
+  <gazebo reference="right_wheel">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="left_wheel">
+    <material>Gazebo/Green</material>
+  </gazebo>  
+
+  <!-- 7. Robot Sensors -->
+
+  <link name="camera">
+    <collision>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/> 
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <!-- material name="white" -->
+    </visual>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+      <inertia
+          ixx="1E-6" ixy="0" ixz="0"
+          iyy="1E-6" iyz="0"
+          izz="1E-6"
+      />
+    </inertial>
+  </link>
+
+  <!-- Joint related to the camera -->
+  <joint type="fixed" name="camera_joint">
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <origin xyz="0.2 0.0 0" rpy="0 0 0"/>
+    <parent link="chassis"/>    
+    <child link="camera"/>
+  </joint>
+
+  <gazebo reference="camera">
+    <material>Gazebo/Red</material>
+  </gazebo>
+ 
+  <!-- Addind the LiDAR sensor -->
+  <link name="hokuyo">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>     
+      <geometry>
+	    <!-- The line bellow seems not work -->
+        <mesh filename="package://my_robot/meshes/hokuyo.dae"/>
+        <!-- Eventually it must be indicated the whole path: -->
+        <!-- mesh filename="/home/robond/Workspace/catkin_ws/src/my_robot/meshes/hokuyo.dae"/ -->
+        <!-- box size="0.1 0.1 0.1"/-->       
+      </geometry>    
+    </visual>   
+    
+    <inertial>
+      <mass value="1E-5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="1E-6" ixy="0" ixz="0"
+        iyy="1E-6" iyz="0"
+        izz="1E-6"
+      />
+    </inertial>
+  </link>
+
+  <!-- Joint related to the LiDAR -->
+  <joint type="fixed" name="hokuyo_joint">
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <origin xyz="0.15 0 0.1" rpy="0 0 0"/>
+    <parent link="chassis"/>    
+    <child link="hokuyo"/>
+  </joint>
+  
+  <gazebo reference="hokuyo">
+    <material>Gazebo/Turquoise</material>
+  </gazebo> 
+
+  <!-- Adding the Kinect camera, fpassold, 28.03.2021, [4. Sensor Updagrade](4_Sensor_Upgrade.html) -->
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+    <parent link="chassis"/> <!-- Needs update. same as used by hokuyo: <parent link="camera_link"/> -->
+    <child link="camera_link_optical"/>
+  </joint>
+  <link name="camera_link_optical">
+  </link>   
+
+</robot>
