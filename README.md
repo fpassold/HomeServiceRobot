@@ -238,17 +238,17 @@ The video https://youtu.be/3sSG40oFYig  allows to view the pick_objects node in 
    But at the end of the project, when trying to make this version of add_markers work with odometry data, the whole set didn't work precisely due to problems with the execution of parts of the code intercalated with the animations. Explaining more simply, this code, despite not generating a compilation error or an error during execution, was not able to execute just the routine (call back) that access and uses the odometry data. Reason why, this second version (renamed to “**add_markers-odometry_fail.cpp**”) was abandoned.
    The next figure shows the unwanted result obtained (notice the first marker in the pick up zone, a green ball still "bouncing" while the robot is already in its drop off zone):
    ![rviz_screenshot_2021_06_02-00_40_18](figures/rviz_screenshot_2021_06_02-00_40_18.png)
-   The next figure even shows the graph with the active nodes and topics confirming that the add_markers node was connected to the /odom topic:
+   The next figure even shows the graph with the active nodes and topics confirming that the add_markers.cpp node was connected to the /odom topic:
    ![rosgrap13](figures/rosgrap13.png)
 
-* A **third version of “add_makers.cpp”** was created without any animation and which uses simple squares (low height cubes) with translucency as markers. This version was renamed to "**add_markers_2.cpp**" at the end of the project.
+* A **third version** of “add_makers.cpp” was created without any animation and which uses simple squares (low height cubes) as markers. This version has been renamed to **add_markers_2.cpp**. “add_markers_2.cpp” just shows the markers as required by Udacity, without querying Odometry data.
    The next figures show the markers finally adopted:
 
-   | Pickup zone:                                                 | Drop off zone:                                               |
+   | **Pickup zone** <br />(bright green square marker used):     | **Drop off zone**<br />(used a light blue square marker):    |
    | ------------------------------------------------------------ | ------------------------------------------------------------ |
-   | ![rviz_screenshot_2021_06_04-01_49_29](figures/rviz_screenshot_2021_06_04-01_49_29.png) | ![rviz_screenshot_2021_06_04-01_50_30](figures/rviz_screenshot_2021_06_04-01_50_30.png) |
+   | ![rviz_screenshot_2021_06_09-16_36_03](figures/rviz_screenshot_2021_06_09-16_36_03.png) | ![rviz_screenshot_2021_06_09-16_36_15](figures/rviz_screenshot_2021_06_09-16_36_15.png) |
 
-* Created the launch file: **add_markers.launch**.
+* Created the launch file: **add_markers.launch**. This version calls add_markers.cpp (which in the current version placed in the repository, corresponds to add_markers_2.cpp).
 
 * Created a RViz config file:
    `.../src/my_robot/rvizConfig/rviz_add_markers.rviz`.
@@ -319,11 +319,19 @@ The video https://youtu.be/3sSG40oFYig  allows to view the pick_objects node in 
   ~/ws_project_7/catkin_ws$ roslaunch my_robot pick_objects.launch
   ```
   
-  This final result can be seen in: https://youtu.be/yBRJ4_RfraI
+  A final result can be seen in: https://youtu.be/yBRJ4_RfraI (in this “old” version, as the robot moves to the drop off zone, the marker for this zone is still showing).
+  
+  As required by Udacity, the **current version of *add_markers.cpp*** does not show  the marker for the drop off zone while the robot does not reach this zone, as can be seen in the images below:
+  
+  | Robot moving to pick up zone:                                | Robot reaches the Drop Off zone:                             |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![rviz_screenshot_2021_06_09-15_33_06](figures/rviz_screenshot_2021_06_09-15_33_06.png) | ![rviz_screenshot_2021_06_09-15_35_02](figures/rviz_screenshot_2021_06_09-15_35_02.png) |
+  | Robot moving to pick up zone after material "collection":    | Showing robot over the drop off zone marker:                 |
+  | ![rviz_screenshot_2021_06_09-15_33_41](figures/rviz_screenshot_2021_06_09-15_33_41.png) | ![rviz_screenshot_2021_06_09-15_22_33](figures/rviz_screenshot_2021_06_09-15_22_33.png) |
+  
+  
 
-
-
-#### Mode use with only 1 script file
+#### Home Service Robot using script file
 
 * Created the script file: **home_service.sh** to brings up the Gazebo with myrobot in myworld and AMCL node, RViz and the node add_makers.
   Usage:
@@ -333,10 +341,7 @@ The video https://youtu.be/3sSG40oFYig  allows to view the pick_objects node in 
   ~/ws_project_7/catkin_ws/src/scripts$ ./home_service.sh 
   ```
 
-The final result can be seen on YouTube: https://youtu.be/-AlIbPCiigY
 
 
----
-
-Fernando Passold, last update 05.06.2021
+Fernando Passold, last update 05.06.2021; 09.06.2021
 
