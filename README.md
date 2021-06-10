@@ -341,7 +341,18 @@ The video https://youtu.be/3sSG40oFYig  allows to view the pick_objects node in 
   ~/ws_project_7/catkin_ws/src/scripts$ ./home_service.sh 
   ```
 
+  Last video posted on YouTube: https://youtu.be/Gw0a9FORIA8
+
+  As could be seen in the video, the robot:
+
+  * does not stuck in the environment;
+  * `home_service.sh` does:
+    1. Initially show the marker at the pickup zone.
+    2. Hide the marker once your robot reach the pickup zone.
+    3. Wait 5 seconds to simulate a pickup.
+    4. Show the marker at the drop off zone once your robot reaches it.
 
 
-Fernando Passold, last update 05.06.2021; 09.06.2021
+
+Fernando Passold, last update 05.06.2021; 09.06.2021; 10.06.2021
 
